@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:11:06 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/16 23:38:27 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/17 23:54:09 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,19 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (nb * sign);
+}
+
+long long	get_time(void)
+{
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL))
+		return (0);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	valhalla(t_life *life)
+{
+	free(life->philo);
+	free(life);
 }

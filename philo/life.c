@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   life.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 23:34:22 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/18 00:09:26 by rshatra          ###   ########.fr       */
+/*   Created: 2024/08/17 23:39:53 by rshatra           #+#    #+#             */
+/*   Updated: 2024/08/18 00:10:43 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	main(int ac, char **av)
+void	start_life(t_life *life)
 {
-	t_life	*life;
+	int	i;
 
-	if (check_args(ac, av))
-		return (1);
-	if (init_life(ac, av, &life))
-		return (1);
-	start_life(life);
-	return (0);
-}
-
-void	*life_cycle(void *philo)
-{
-	t_philo	*ph;
-
-	ph = (t_philo *)philo;
-	printf("Philo %d is alive\n", ph->id);
-	printf("Philo ate at %lld\n", ph->last_eat);
-	sleep(1);
-	return (NULL);
+	i = 0;
+	life->big_bang = get_time();
+	while (i < life->philos_num)
+	{
+		pthread_create(&life->philo[i].thread, NULL,
+			life_cycle, &life->philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < life->philos_num)
+	{
+		pthread_join(life->philo[i].thread, NULL);
+		i++;
+	}
+	valhalla(life);
 }
