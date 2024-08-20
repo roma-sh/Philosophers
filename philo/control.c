@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 23:34:22 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/19 23:18:02 by rshatra          ###   ########.fr       */
+/*   Created: 2024/08/18 01:27:30 by rshatra           #+#    #+#             */
+/*   Updated: 2024/08/20 01:28:05 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	main(int ac, char **av)
+int	eyes_of_the_world(t_philo *ph)
 {
-	t_life	*life;
+	long long	time;
 
-	if (check_args(ac, av))
+	time = get_time();
+	if (ph->life_cycle->meals_num > 0
+		&& ph->eat_count >= ph->life_cycle->meals_num)
 		return (1);
-	if (init_life(ac, av, &life))
+	if (ph->life_cycle->all_philos_full == ph->life_cycle->philos_num)
 		return (1);
-	start_life(life);
+	if (ph->life_cycle->philo_dead)
+		return (1);
+	if (time - ph->last_eat > ph->life_cycle->time_to_die)
+	{
+		if (!ph->life_cycle->philo_dead)
+		{
+			ph->life_cycle->philo_dead = 1;
+			print_status(ph, "died");
+		}
+		return (1);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 23:34:19 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/18 00:09:56 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 03:27:01 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_life
 	int				meals_num;
 	int				all_philos_full;
 	int				philo_dead;
-	int				someone_dead;
 	long long		big_bang;
 	t_philo			*philo;
 }					t_life;
@@ -53,6 +52,13 @@ void				*life_cycle(void *philo);
 long long			get_time(void);
 void				valhalla(t_life *life);
 void				start_life(t_life *life);
+void				think(t_philo *ph);
+void				go_sleep(t_philo *ph);
+void				eat(t_philo *ph);
+void				print_status(t_philo *ph, char *status);
+void				ft_usleep(long long time);
+int					eyes_of_the_world(t_philo *ph);
+void				one_philo(t_life *life);
 
 
 #endif

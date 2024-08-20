@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:12:02 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/18 00:09:00 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 03:27:17 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	init_life(int ac, char **av, t_life **life)
 	(*life)->time_to_sleep = ft_atoi(av[4]);
 	(*life)->all_philos_full = 0;
 	(*life)->philo_dead = 0;
+	(*life)->big_bang = 0;
 	(*life)->philo = NULL;
 	if (ac == 6)
 		(*life)->meals_num = ft_atoi(av[5]);

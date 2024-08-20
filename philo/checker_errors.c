@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:32:30 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/16 23:38:45 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 01:16:16 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,10 @@ int	check_args2(int ac, char **av)
 		return (1);
 	}
 	return (0);
+}
+
+void	valhalla(t_life *life)
+{
+	free(life->philo);
+	free(life);
 }
