@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 23:34:19 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 03:47:14 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 18:53:19 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_philo
 	long long		last_eat;
 	pthread_t		thread;
 	struct s_life	*life_cycle;
+	pthread_mutex_t	last_eat_lock;
 }					t_philo;
 
 typedef struct s_life
@@ -42,6 +43,11 @@ typedef struct s_life
 	long long		big_bang;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_lock;
+	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	full_lock;
+	pthread_mutex_t	check_lock;
+	pthread_mutex_t	philo_ate_lock;
 }					t_life;
 
 int					ft_atoi(const char *str);
@@ -57,9 +63,13 @@ void				think(t_philo *ph);
 void				go_sleep(t_philo *ph);
 void				eat(t_philo *ph);
 void				print_status(t_philo *ph, char *status);
-void				ft_usleep(long long time);
+void				ft_usleep(long long sleep_time, t_life *life);
 int					eyes_of_the_world(t_philo *ph);
-void				one_philo(t_life *life);
-
+void				one_philo(t_life *life, int *flag);
+int					init_mutexes(t_life *life);
+int					init_mutexes(t_life *life);
+int					keep_init(t_life *life, int *flag);
+void				cleanup_mutexes(t_life *life, int forks_count, int *flag);
+void				mutex_error(t_life *life);
 
 #endif

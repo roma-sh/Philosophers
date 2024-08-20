@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:32:30 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 03:48:36 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 04:47:17 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,10 @@ void	valhalla(t_life *life)
 	free(life->forks);
 	free(life->philo);
 	free(life);
+}
+
+void	mutex_error(t_life *life)
+{
+	printf("Failed to initialize mutexes\n");
+	valhalla(life);
 }
