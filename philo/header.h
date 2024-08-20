@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 23:34:19 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 03:27:01 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 03:47:14 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_life
 	int				philo_dead;
 	long long		big_bang;
 	t_philo			*philo;
+	pthread_mutex_t	*forks;
 }					t_life;
 
 int					ft_atoi(const char *str);

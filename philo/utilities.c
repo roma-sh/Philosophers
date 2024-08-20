@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:11:06 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 01:22:39 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 04:02:21 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	one_philo(t_life *life)
 		printf("%lld %d has taken a fork\n", get_time() - life->big_bang, 1);
 		ft_usleep(life->time_to_die);
 		printf("%lld %d died\n", get_time() - life->big_bang, 1);
+		valhalla(life);
 		exit(0);
 	}
 }

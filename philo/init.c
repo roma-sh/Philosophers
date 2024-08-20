@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:12:02 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 03:27:17 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 03:47:46 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ int	init_life(int ac, char **av, t_life **life)
 	(*life)->philo_dead = 0;
 	(*life)->big_bang = 0;
 	(*life)->philo = NULL;
+	(*life)->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+			* (*life)->philos_num);
 	if (ac == 6)
 		(*life)->meals_num = ft_atoi(av[5]);
 	else
 		(*life)->meals_num = -1;
 	if (init_philos(*life))
 	{
+		free((*life)->forks);
 		free(*life);
 		return (1);
 	}

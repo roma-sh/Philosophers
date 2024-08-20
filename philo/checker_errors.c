@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:32:30 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 01:16:16 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 03:48:36 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	check_args2(int ac, char **av)
 
 void	valhalla(t_life *life)
 {
+	free(life->forks);
 	free(life->philo);
 	free(life);
 }
