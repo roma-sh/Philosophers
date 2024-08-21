@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:39:53 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 21:37:50 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 04:59:12 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	*life_cycle(void *philo)
 	ph = (t_philo *)philo;
 	if (ph->id % 2)
 	{
-		print_status(ph, "is sleeping");
-		ft_usleep(40, ph->life_cycle);
+		print_status(ph, "is thinking");
+		ft_usleep(ph->life_cycle->time_to_eat, ph->life_cycle);
 	}
 	while (1)
 	{
@@ -76,6 +76,7 @@ void	eat(t_philo *ph)
 	t_life	*life;
 
 	life = ph->life_cycle;
+	pthread_mutex_unlock(&life->dead_lock);
 	pthread_mutex_lock(&life->forks[ph->left_fork]);
 	print_status(ph, "has taken a fork");
 	pthread_mutex_lock(&life->forks[ph->right_fork]);
@@ -91,7 +92,5 @@ void	eat(t_philo *ph)
 	pthread_mutex_unlock(&life->forks[ph->left_fork]);
 	pthread_mutex_unlock(&life->forks[ph->right_fork]);
 	pthread_mutex_lock(&life->full_lock);
-	if (ph->eat_count == ph->life_cycle->meals_num)
-		ph->life_cycle->all_philos_full++;
 	pthread_mutex_unlock(&life->full_lock);
 }

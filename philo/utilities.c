@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:11:06 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/21 02:23:24 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 05:45:51 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,21 @@ long long	get_time(void)
 
 void	ft_usleep(long long sleep_time, t_life *life)
 {
+	long long	base;
 	long long	start;
-	long long	elapsed_time;
 
+	base = 500;
 	start = get_time();
-	while (1)
+	while (get_time() - start < sleep_time)
 	{
+		usleep(base);
 		pthread_mutex_lock(&life->dead_lock);
 		if (life->philo_dead)
 		{
 			pthread_mutex_unlock(&life->dead_lock);
-			break ;
+			return ;
 		}
 		pthread_mutex_unlock(&life->dead_lock);
-		elapsed_time = get_time() - start;
-		if (elapsed_time >= sleep_time)
-			break ;
-		if (sleep_time - elapsed_time > 1000)
-			usleep (500);
-		else
-			usleep (100);
 	}
 }
 
