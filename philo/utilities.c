@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 23:11:06 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 18:57:30 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 02:23:24 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	ft_usleep(long long sleep_time, t_life *life)
 		elapsed_time = get_time() - start;
 		if (elapsed_time >= sleep_time)
 			break ;
-
 		if (sleep_time - elapsed_time > 1000)
 			usleep (500);
 		else

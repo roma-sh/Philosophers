@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:39:53 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 19:25:23 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/20 21:37:50 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,10 @@ void	start_life(t_life *life)
 		pthread_mutex_unlock(&life->philo->last_eat_lock);
 		i++;
 	}
+	death_checker(life);
 	i = 0;
 	while (i < life->philos_num)
-	{
-		pthread_join(life->philo[i].thread, NULL);
-		i++;
-	}
+		pthread_join(life->philo[i++].thread, NULL);
 	cleanup_mutexes(life, life->philos_num, flag);
 }
 

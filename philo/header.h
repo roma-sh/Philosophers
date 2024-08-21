@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 23:34:19 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 18:53:19 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 02:27:27 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_life
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	full_lock;
-	pthread_mutex_t	check_lock;
 	pthread_mutex_t	philo_ate_lock;
 }					t_life;
 
@@ -67,9 +66,10 @@ void				ft_usleep(long long sleep_time, t_life *life);
 int					eyes_of_the_world(t_philo *ph);
 void				one_philo(t_life *life, int *flag);
 int					init_mutexes(t_life *life);
-int					init_mutexes(t_life *life);
 int					keep_init(t_life *life, int *flag);
 void				cleanup_mutexes(t_life *life, int forks_count, int *flag);
 void				mutex_error(t_life *life);
+void				death_checker(t_life *life);
+void				death_checker_2nd(t_life *life);
 
 #endif

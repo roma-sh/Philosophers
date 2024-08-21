@@ -6,12 +6,11 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:12:02 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 18:22:32 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 02:28:25 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
 
 int	init_life(int ac, char **av, t_life **life)
 {
@@ -45,22 +44,27 @@ int	init_philos(t_life *life)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	life->philo = (t_philo *)malloc(sizeof(t_philo) * life->philos_num);
 	if (!life->philo)
 		return (1);
-	while (i < life->philos_num)
+	while (++i < life->philos_num)
 	{
 		life->philo[i].id = i + 1;
 		life->philo[i].eat_count = 0;
 		life->philo[i].last_eat = get_time();
+		if (pthread_mutex_init(&(life->philo[i].last_eat_lock), NULL) != 0)
+		{
+			while (i >= 0)
+				pthread_mutex_destroy(&(life->philo[i--].last_eat_lock));
+			return (1);
+		}
 		life->philo[i].life_cycle = life;
 		if (i == 0)
 			life->philo[i].left_fork = life->philos_num - 1;
 		else
 			life->philo[i].left_fork = i - 1;
 		life->philo[i].right_fork = i;
-		i++;
 	}
 	return (0);
 }
@@ -68,10 +72,10 @@ int	init_philos(t_life *life)
 int	init_mutexes(t_life *life)
 {
 	int	i;
-	int	flag[6];
+	int	flag[5];
 
 	i = 0;
-	while (i < 6)
+	while (i < 5)
 		flag[i++] = 0;
 	i = 0;
 	while (i < life->philos_num)
@@ -85,10 +89,8 @@ int	init_mutexes(t_life *life)
 	}
 	if (pthread_mutex_init(&(life->print_lock), NULL) != 0)
 		flag[1] = 1;
-	if (pthread_mutex_init(&(life->check_lock), NULL) != 0)
-		flag[2] = 1;
 	if (pthread_mutex_init(&(life->dead_lock), NULL) != 0)
-		flag[3] = 1;
+		flag[2] = 1;
 	if (keep_init(life, flag))
 		return (1);
 	return (0);
@@ -97,10 +99,10 @@ int	init_mutexes(t_life *life)
 int	keep_init(t_life *life, int *flag)
 {
 	if (pthread_mutex_init(&(life->full_lock), NULL) != 0)
-		flag[4] = 1;
+		flag[3] = 1;
 	if (pthread_mutex_init(&(life->philo_ate_lock), NULL) != 0)
-		flag[5] = 1;
-	if (flag[1] || flag[2] || flag[3] || flag[4] || flag[5])
+		flag[4] = 1;
+	if (flag[1] || flag[2] || flag[3] || flag[4])
 	{
 		cleanup_mutexes(life, life->philos_num, flag);
 		return (mutex_error(life), 1);
@@ -121,11 +123,9 @@ void	cleanup_mutexes(t_life *life, int forks_count, int *flag)
 	if (flag[1] > 0)
 		pthread_mutex_destroy(&(life->print_lock));
 	if (flag[2] > 0)
-		pthread_mutex_destroy(&(life->check_lock));
-	if (flag[3] > 0)
 		pthread_mutex_destroy(&(life->dead_lock));
-	if (flag[4] > 0)
+	if (flag[3] > 0)
 		pthread_mutex_destroy(&(life->full_lock));
-	if (flag[5] > 0)
+	if (flag[4] > 0)
 		pthread_mutex_destroy(&(life->philo_ate_lock));
 }

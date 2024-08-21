@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 01:27:30 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/20 19:17:55 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 02:22:56 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,56 @@ int	eyes_of_the_world(t_philo *ph)
 	if (ph->life_cycle->philo_dead)
 		return (1);
 	return (0);
+}
+
+void	death_checker(t_life *life)
+{
+	int	i;
+
+	while (1)
+	{
+		i = 0;
+		if (life->philo_dead || life->all_philos_full)
+			break ;
+		while (life->meals_num > 0 && i < life->philos_num
+			&& life->philo[i].eat_count >= life->meals_num)
+			i++;
+		if (i == life->philos_num)
+		{
+			pthread_mutex_lock(&life->full_lock);
+			life->all_philos_full = 1;
+			pthread_mutex_unlock(&life->full_lock);
+			break ;
+		}
+		death_checker_2nd(life);
+	}
+}
+
+void	death_checker_2nd(t_life *life)
+{
+	int	i;
+
+	i = 0;
+	while (i < life->philos_num)
+	{
+		pthread_mutex_lock(&life->dead_lock);
+		if (life->philo_dead)
+		{
+			pthread_mutex_unlock(&life->dead_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&life->dead_lock);
+		pthread_mutex_lock(&life->philo[i].last_eat_lock);
+		if (get_time() - life->philo[i].last_eat > life->time_to_die)
+		{
+			print_status(&life->philo[i], "died");
+			pthread_mutex_lock(&life->dead_lock);
+			life->philo_dead = 1;
+			pthread_mutex_unlock(&life->dead_lock);
+			pthread_mutex_unlock(&life->philo[i].last_eat_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&life->philo[i++].last_eat_lock);
+		usleep(100);
+	}
 }
