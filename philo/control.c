@@ -6,7 +6,7 @@
 /*   By: rshatra <rshatra@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 01:27:30 by rshatra           #+#    #+#             */
-/*   Updated: 2024/08/21 05:24:10 by rshatra          ###   ########.fr       */
+/*   Updated: 2024/08/21 06:07:38 by rshatra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	death_checker(t_life *life)
 	while (1)
 	{
 		i = 0;
-
 		if (life->philo_dead || life->all_philos_full)
 			break ;
 		while (life->meals_num > 0 && i < life->philos_num
