@@ -14,13 +14,31 @@
 
 int	eyes_of_the_world(t_philo *ph)
 {
+	pthread_mutex_lock(&ph->life_cycle->philo_ate_lock);
 	if (ph->life_cycle->meals_num > 0
 		&& ph->eat_count >= ph->life_cycle->meals_num)
+		{
+	pthread_mutex_unlock(&ph->life_cycle->philo_ate_lock);
+
 		return (1);
+		}
+	pthread_mutex_unlock(&ph->life_cycle->philo_ate_lock);
+	pthread_mutex_lock(&ph->life_cycle->full_lock);
+
 	if (ph->life_cycle->all_philos_full)
+	{
+	pthread_mutex_unlock(&ph->life_cycle->full_lock);
+
 		return (1);
+	}
+	pthread_mutex_unlock(&ph->life_cycle->full_lock);
+	pthread_mutex_lock(&ph->life_cycle->dead_lock);
 	if (ph->life_cycle->philo_dead)
+	{
+		pthread_mutex_unlock(&ph->life_cycle->dead_lock);
 		return (1);
+	}
+	pthread_mutex_unlock(&ph->life_cycle->dead_lock);
 	return (0);
 }
 
@@ -31,8 +49,16 @@ void	death_checker(t_life *life)
 	while (1)
 	{
 		i = 0;
+		pthread_mutex_lock(&life->dead_lock);
+		pthread_mutex_lock(&life->full_lock);
 		if (life->philo_dead || life->all_philos_full)
+		{
+			pthread_mutex_unlock(&life->dead_lock);
+			pthread_mutex_unlock(&life->full_lock);
 			break ;
+		}
+		pthread_mutex_unlock(&life->dead_lock);
+		pthread_mutex_unlock(&life->full_lock);
 		while (life->meals_num > 0 && i < life->philos_num
 			&& life->philo[i].eat_count >= life->meals_num)
 			i++;

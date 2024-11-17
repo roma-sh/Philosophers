@@ -25,11 +25,12 @@ void	start_life(t_life *life)
 	i = 0;
 	while (i < life->philos_num)
 	{
-		pthread_create(&life->philo[i].thread, NULL,
-			life_cycle, &life->philo[i]);
+
 		pthread_mutex_lock(&life->philo->last_eat_lock);
 		life->philo[i].last_eat = get_time();
 		pthread_mutex_unlock(&life->philo->last_eat_lock);
+		pthread_create(&life->philo[i].thread, NULL,
+			life_cycle, &life->philo[i]);
 		i++;
 	}
 	death_checker(life);
@@ -76,21 +77,41 @@ void	eat(t_philo *ph)
 	t_life	*life;
 
 	life = ph->life_cycle;
-	pthread_mutex_unlock(&life->dead_lock);
-	pthread_mutex_lock(&life->forks[ph->left_fork]);
+	if (ph->id % 2 == 0)
+	{
+		pthread_mutex_lock(&life->forks[ph->left_fork]);
 	print_status(ph, "has taken a fork");
-	pthread_mutex_lock(&life->forks[ph->right_fork]);
+		pthread_mutex_lock(&life->forks[ph->right_fork]);
 	print_status(ph, "has taken a fork");
-	pthread_mutex_lock(&ph->last_eat_lock);
+
+	}
+	else
+	{
+		pthread_mutex_lock(&life->forks[ph->right_fork]);
+	print_status(ph, "has taken a fork");
+		pthread_mutex_lock(&life->forks[ph->left_fork]);
+	print_status(ph, "has taken a fork");
+	}
 	print_status(ph, "is eating");
+
+
+	pthread_mutex_lock(&ph->last_eat_lock);
 	ph->last_eat = get_time();
 	pthread_mutex_unlock(&ph->last_eat_lock);
+
+
 	ft_usleep(ph->life_cycle->time_to_eat, ph->life_cycle);
-	pthread_mutex_unlock(&life->philo_ate_lock);
+	pthread_mutex_lock(&life->philo_ate_lock);
 	ph->eat_count++;
 	pthread_mutex_unlock(&life->philo_ate_lock);
-	pthread_mutex_unlock(&life->forks[ph->left_fork]);
-	pthread_mutex_unlock(&life->forks[ph->right_fork]);
-	pthread_mutex_lock(&life->full_lock);
-	pthread_mutex_unlock(&life->full_lock);
+	if (ph->id % 2 == 0)
+	{
+		pthread_mutex_unlock(&life->forks[ph->right_fork]);
+		pthread_mutex_unlock(&life->forks[ph->left_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&life->forks[ph->left_fork]);
+		pthread_mutex_unlock(&life->forks[ph->right_fork]);
+	}
 }

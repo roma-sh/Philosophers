@@ -73,8 +73,8 @@ void	print_status(t_philo *ph, char *status)
 {
 	long long	time;
 
-	pthread_mutex_lock(&ph->life_cycle->print_lock);
 	pthread_mutex_lock(&ph->life_cycle->dead_lock);
+	pthread_mutex_lock(&ph->life_cycle->print_lock);
 	time = get_time() - ph->life_cycle->big_bang;
 	if (!ph->life_cycle->philo_dead)
 		printf("%lld %d %s\n", time, ph->id, status);
